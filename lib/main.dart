@@ -2,6 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:oepinion_web/dashboard.dart';
+import 'package:oepinion_web/dashboard_copy.dart';
 import 'package:oepinion_web/login.dart';
 
 import 'firebase_options.dart';
@@ -28,7 +29,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
           primarySwatch: Colors.red,
           fontFamily: GoogleFonts.inter().fontFamily),
-      home: DashboardPage(),
+      home: DashboardPage_Copy(),
     );
   }
 }
