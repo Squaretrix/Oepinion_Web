@@ -78,7 +78,8 @@ class _DashboardPageState extends State<DashboardPage> {
                                       borderRadius: BorderRadius.circular(10),
                                       boxShadow: [
                                         BoxShadow(
-                                            color: Colors.black.withOpacity(0.10),
+                                            color:
+                                                Colors.black.withOpacity(0.10),
                                             blurRadius: 5,
                                             spreadRadius: 1,
                                             offset: Offset(0, 2)),
@@ -162,7 +163,8 @@ class _DashboardPageState extends State<DashboardPage> {
                                                     //         document.id);
                                                   },
                                                   icon: Icon(
-                                                    Icons.delete_forever_rounded,
+                                                    Icons
+                                                        .delete_forever_rounded,
                                                     color: Colors.red,
                                                   )),
                                             ],
@@ -187,11 +189,11 @@ class _DashboardPageState extends State<DashboardPage> {
 
 confirmDeleteDialog(BuildContext context, String doc_id) {
   // set up the buttons
-  Widget cancelButton = FlatButton(
+  Widget cancelButton = TextButton(
     child: Text("Abbrechen"),
     onPressed: () {},
   );
-  Widget continueButton = FlatButton(
+  Widget continueButton = TextButton(
     child: Text("Endgültig Löschen"),
     onPressed: () async {
       DBHandlerService().deleteSurvey(doc_id);
@@ -265,7 +267,7 @@ createSurvey(
     */
 
   // Create button
-  Widget okButton = FlatButton(
+  Widget okButton = TextButton(
     child: Text(
       "Hochladen",
       style: TextStyle(color: Colors.red),
@@ -281,7 +283,7 @@ createSurvey(
       Navigator.of(context).pop();
     },
   );
-  Widget exitButton = FlatButton(
+  Widget exitButton = TextButton(
     child: Text("Abbrechen", style: TextStyle(color: Colors.grey)),
     onPressed: () {
       Navigator.of(context).pop();
@@ -395,7 +397,7 @@ updateSurvey(BuildContext context, String doc_id, String category, String title,
     */
 
   // Create button
-  Widget okButton = FlatButton(
+  Widget okButton = TextButton(
     child: Text(
       "Aktualisieren",
       style: TextStyle(color: Colors.red),
@@ -412,7 +414,7 @@ updateSurvey(BuildContext context, String doc_id, String category, String title,
       Navigator.of(context).pop();
     },
   );
-  Widget exitButton = FlatButton(
+  Widget exitButton = TextButton(
     child: Text("Abbrechen", style: TextStyle(color: Colors.grey)),
     onPressed: () {
       Navigator.of(context).pop();
