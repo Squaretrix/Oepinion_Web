@@ -11,6 +11,7 @@ class DashboardPage extends StatefulWidget {
 }
 
 class _DashboardPageState extends State<DashboardPage> {
+  final ScrollController scrollController = ScrollController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
