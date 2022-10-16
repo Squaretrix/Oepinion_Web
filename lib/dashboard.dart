@@ -11,6 +11,7 @@ class DashboardPage extends StatefulWidget {
 }
 
 class _DashboardPageState extends State<DashboardPage> {
+  final ScrollController scrollController = ScrollController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -47,138 +48,134 @@ class _DashboardPageState extends State<DashboardPage> {
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 12.0),
-                child: SingleChildScrollView(
-                  scrollDirection: Axis.vertical,
-                  child: Container(
-                    width: MediaQuery.of(context).size.width,
-                    //height: MediaQuery.of(context).size.height / 4,
-                    child: StreamBuilder(
-                        stream: FirebaseFirestore.instance
-                            .collection('Surveys')
+                child: Container(
+                  width: MediaQuery.of(context).size.width,
+                  //height: MediaQuery.of(context).size.height / 4,
+                  child: StreamBuilder(
+                      stream: FirebaseFirestore.instance
+                          .collection('Surveys')
 
-                            //.orderBy('Datum', descending: false)
-                            .snapshots(),
-                        builder: (BuildContext context,
-                            AsyncSnapshot<QuerySnapshot> snapshot) {
-                          if (!snapshot.hasData) {
-                            return Center(
-                              child: CircularProgressIndicator(),
-                            );
-                          }
+                          //.orderBy('Datum', descending: false)
+                          .snapshots(),
+                      builder: (BuildContext context,
+                          AsyncSnapshot<QuerySnapshot> snapshot) {
+                        if (!snapshot.hasData) {
+                          return Center(
+                            child: CircularProgressIndicator(),
+                          );
+                        }
 
-                          return ListView(
+                        return Scrollbar(
+                          controller: scrollController,
+                          child: ListView(
                             shrinkWrap: true,
                             children: snapshot.data!.docs.map((document) {
                               return Padding(
                                 padding: const EdgeInsets.all(8.0),
-                                child: Expanded(
-                                  child: Container(
-                                    decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      borderRadius: BorderRadius.circular(10),
-                                      boxShadow: [
-                                        BoxShadow(
-                                            color:
-                                                Colors.black.withOpacity(0.10),
-                                            blurRadius: 5,
-                                            spreadRadius: 1,
-                                            offset: Offset(0, 2)),
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(10),
+                                    boxShadow: [
+                                      BoxShadow(
+                                          color: Colors.black.withOpacity(0.10),
+                                          blurRadius: 5,
+                                          spreadRadius: 1,
+                                          offset: Offset(0, 2)),
+                                    ],
+                                  ),
+                                  //width: 40,
+                                  //height: 150,
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(12.0),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text(
+                                          document['title'],
+                                          style: TextStyle(
+                                              fontSize: 24.0,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                        SizedBox(
+                                          height: 5,
+                                        ),
+                                        Text(
+                                          document['category'],
+                                          style: TextStyle(
+                                              fontSize: 18.0,
+                                              fontStyle: FontStyle.italic),
+                                        ),
+                                        SizedBox(
+                                          height: 10,
+                                        ),
+                                        Text(document['question']),
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.end,
+                                          children: [
+                                            /*
+                                            IconButton(
+                                                onPressed: () {
+                                                  // DBHandlerService()
+                                                  //     .deleteAppointment(
+                                                  //         document.id);
+                                                },
+                                                icon: Icon(
+                                                  Icons.info_outline,
+                                                  color: Colors.grey,
+                                                )),
+                                                */
+                                            IconButton(
+                                                onPressed: () async {
+                                                  await updateSurvey(
+                                                      context,
+                                                      document.id,
+                                                      document['category'],
+                                                      document['title'],
+                                                      document['question']);
+                                                  // go to editappointmentpage with document.id
+                                                  // Navigator.push(
+                                                  //   context,
+                                                  //   MaterialPageRoute<void>(
+                                                  //       builder: (BuildContext
+                                                  //               context) =>
+                                                  //           EditAppointmentScreen(
+                                                  //             docId: document.id,
+                                                  //             datum:
+                                                  //                 document['Datum'],
+                                                  //             kunde: document[
+                                                  //                 'Dienstleister'],
+                                                  //           )),
+                                                  // );
+                                                },
+                                                icon: Icon(Icons.edit)),
+                                            IconButton(
+                                                onPressed: () async {
+                                                  await confirmDeleteDialog(
+                                                      context, document.id);
+                                                  // DBHandlerService()
+                                                  //     .deleteSurvey(
+                                                  //         document.id);
+                                                },
+                                                icon: Icon(
+                                                  Icons.delete_forever_rounded,
+                                                  color: Colors.red,
+                                                )),
+                                          ],
+                                        ),
                                       ],
-                                    ),
-                                    //width: 40,
-                                    //height: 150,
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(12.0),
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Text(
-                                            document['title'],
-                                            style: TextStyle(
-                                                fontSize: 24.0,
-                                                fontWeight: FontWeight.bold),
-                                          ),
-                                          SizedBox(
-                                            height: 5,
-                                          ),
-                                          Text(
-                                            document['category'],
-                                            style: TextStyle(
-                                                fontSize: 18.0,
-                                                fontStyle: FontStyle.italic),
-                                          ),
-                                          SizedBox(
-                                            height: 10,
-                                          ),
-                                          Text(document['question']),
-                                          Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.end,
-                                            children: [
-                                              /*
-                                              IconButton(
-                                                  onPressed: () {
-                                                    // DBHandlerService()
-                                                    //     .deleteAppointment(
-                                                    //         document.id);
-                                                  },
-                                                  icon: Icon(
-                                                    Icons.info_outline,
-                                                    color: Colors.grey,
-                                                  )),
-                                                  */
-                                              IconButton(
-                                                  onPressed: () async {
-                                                    await updateSurvey(
-                                                        context,
-                                                        document.id,
-                                                        document['category'],
-                                                        document['title'],
-                                                        document['question']);
-                                                    // go to editappointmentpage with document.id
-                                                    // Navigator.push(
-                                                    //   context,
-                                                    //   MaterialPageRoute<void>(
-                                                    //       builder: (BuildContext
-                                                    //               context) =>
-                                                    //           EditAppointmentScreen(
-                                                    //             docId: document.id,
-                                                    //             datum:
-                                                    //                 document['Datum'],
-                                                    //             kunde: document[
-                                                    //                 'Dienstleister'],
-                                                    //           )),
-                                                    // );
-                                                  },
-                                                  icon: Icon(Icons.edit)),
-                                              IconButton(
-                                                  onPressed: () async {
-                                                    await confirmDeleteDialog(
-                                                        context, document.id);
-                                                    // DBHandlerService()
-                                                    //     .deleteSurvey(
-                                                    //         document.id);
-                                                  },
-                                                  icon: Icon(
-                                                    Icons
-                                                        .delete_forever_rounded,
-                                                    color: Colors.red,
-                                                  )),
-                                            ],
-                                          ),
-                                        ],
-                                      ),
                                     ),
                                   ),
                                 ),
                               );
                             }).toList(),
-                          );
-                        }),
-                  ),
+                          ),
+                        );
+                      }),
                 ),
               ),
             ]),
