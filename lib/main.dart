@@ -6,6 +6,9 @@ import 'package:oepinion_web/login.dart';
 
 import 'firebase_options.dart';
 
+// https://blog.bitrise.io/post/build-and-deploy-flutter-web-app-firebase
+// https://stackoverflow.com/questions/67059355/flutter-web-app-is-missing-firebase-json-and-shows-welcome-firebase-hosting-set
+
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
