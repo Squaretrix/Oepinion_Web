@@ -30,7 +30,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
           primarySwatch: Colors.red,
           fontFamily: GoogleFonts.inter().fontFamily),
-      home: DashboardPage_Copy(),
+      home: LoginPage(),
     );
   }
 }
